@@ -1,0 +1,37 @@
+# Expose actuator endpoints
+management.endpoints.web.exposure.include=health,info
+
+# mongodatabase
+#spring.data.mongodb.host=<mongo IP>
+#spring.data.mongodb.port=<mongo port>
+spring.data.mongodb.uri=<mongo URI>
+spring.data.mongodb.database=nftguy
+
+# Remove stacktrace from error response
+server.error.include-stacktrace=never
+
+# Cardano
+cardano.network=<options: testnet, mainnet>
+account.mnemonic=<cardano account mnemonic>
+
+# Create Defaults - will be written to database on first run
+# fee is lovelace units, offset in blocks
+create.fee=1000000
+create.ttlOffset=1000
+
+# Blockfrost
+blockfrost.project_key=<project key>
+
+# nft.storage
+nft.storage.url=https://api.nft.storage
+nft.storage.api_key=<api key>
+
+# cardano-wallet
+wallet.url=http://<ip>
+wallet.port=<port>
+wallet.walletId=<wallet id>
+wallet.passphrase=<wallet passphrase>
+
+
+
+
