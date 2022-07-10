@@ -27,7 +27,7 @@ public class TransactionCheckService {
 
     @Scheduled(fixedDelay = 60000)
     public void scheduleExpirationCheck() throws ApiException {
-        logger.info(String.format("Checking for expired transactions"));
+        logger.debug("Checking for expired transactions");
         for (NftTransaction nftTransaction:
              transactionRepository.findAll()) {
             checkTtl(nftTransaction);
