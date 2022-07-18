@@ -37,7 +37,7 @@ public class NftTransactionService {
 
     public NftTransactionDraft checkStatus(String id) throws ApiException {
         this.nftTransaction = this.transactionRepository.findItemById(id);
-        if (!nftTransaction.getPaymentState().equals(PaymentState.PENDING)){
+        if (!this.nftTransaction.getPaymentState().equals(PaymentState.PENDING)){
             return this.transactionRepository.findItemByIdRestricted(id);
         }
         transactionCheckService.checkTtl(this.nftTransaction);
