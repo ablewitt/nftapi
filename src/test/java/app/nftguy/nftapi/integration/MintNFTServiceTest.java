@@ -3,6 +3,7 @@ package app.nftguy.nftapi.integration;
 import app.nftguy.nftapi.helper.*;
 import app.nftguy.nftapi.NftBuilder;
 import app.nftguy.nftapi.cip25.MetaData;
+import com.bloxbean.cardano.client.api.exception.ApiException;
 import com.bloxbean.cardano.client.api.helper.model.TransactionResult;
 import com.bloxbean.cardano.client.api.model.Result;
 import com.bloxbean.cardano.client.exception.CborSerializationException;
@@ -15,70 +16,69 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigInteger;
 
-@SpringBootTest
+@SpringBootTest(properties="spring.main.lazy-initialization=true")
 public class MintNFTServiceTest {
 
     String receiveAddress = "addr_test1qrf87vnetzcmf4vdzhpyatzr90c036xpzkhsdjp4y5as4c72wk6fknuew0vvy6s7jklr2c92t7uf3plyuqvcw390wywql37usz";
     String ipfsLink = "ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu";
-    String nftNmae = "My-Cool_NFT";
+    String nftName = "My-Cool_NFT";
     String tokenName = "TestAsset-Meta";
 
     @Autowired
-    NftBuilder NFTBuilder;
+    AccountHelper accountHelper;
+
+    @Autowired
+    BlockFrostHelper blockFrostHelper;
+
 
     @Test
-    public void create() throws CborSerializationException, JsonProcessingException {
-
+    public void create() throws CborSerializationException, JsonProcessingException, ApiException {
+        NftBuilder nftBuilder = new NftBuilder(blockFrostHelper, accountHelper);
         KeyHelper keyHelper = new KeyHelper();
-
         PolicyHelper policyHelper = new PolicyHelper(keyHelper.getVKey(), keyHelper.getSKey());
-
         AssetHelper assetHelper = new AssetHelper(
                 "TestAsset",
                 BigInteger.valueOf(1L),
                 policyHelper.getPolicyId());
 
         JSONObject attributes = new JSONObject();
-        attributes.put("name", nftNmae);
+        attributes.put("name", nftName);
         attributes.put("image", ipfsLink);
         MetaData metaData = new MetaData(tokenName, attributes, policyHelper.getPolicyId());
 
-        NFTBuilder.init(
-                assetHelper.getMultiAsset(),
-                policyHelper.getPolicy(),
-                metaData.getMetaData(),
-                receiveAddress,
-                10L);
+        nftBuilder
+                .setMultiAsset(assetHelper.getMultiAsset())
+                .setPolicy(policyHelper.getPolicy())
+                .setMetaData(metaData)
+                .setReceiveAddress(receiveAddress)
+                .setTTL(1000L)
+                .build();
     }
 
     @Test
-    public void createSubmit() throws CborSerializationException, JsonProcessingException {
-
+    public void createAndSubmit() throws CborSerializationException, JsonProcessingException, ApiException {
+        NftBuilder nftBuilder = new NftBuilder(blockFrostHelper, accountHelper);
         KeyHelper keyHelper = new KeyHelper();
-
         PolicyHelper policyHelper = new PolicyHelper(keyHelper.getVKey(), keyHelper.getSKey());
-
         AssetHelper assetHelper = new AssetHelper(
                 "TestAsset",
-                BigInteger.valueOf(1),
+                BigInteger.valueOf(1L),
                 policyHelper.getPolicyId());
 
         JSONObject attributes = new JSONObject();
-        attributes.put("name", nftNmae);
+        attributes.put("name", nftName);
         attributes.put("image", ipfsLink);
         MetaData metaData = new MetaData(tokenName, attributes, policyHelper.getPolicyId());
 
-        NFTBuilder.init(
-                assetHelper.getMultiAsset(),
-                policyHelper.getPolicy(),
-                metaData.getMetaData(),
-                receiveAddress,
-                1000);
+        Result<TransactionResult> result =  nftBuilder
+                .setMultiAsset(assetHelper.getMultiAsset())
+                .setPolicy(policyHelper.getPolicy())
+                .setMetaData(metaData)
+                .setReceiveAddress(receiveAddress)
+                .setTTL(1000L)
+                .build()
+                .submit();
 
-        Result<TransactionResult> result =  NFTBuilder.submit();
-        Assertions.assertTrue(result.isSuccessful());
-
-
-
+        Assertions.assertTrue(result.isSuccessful(), result.toString());
     }
 }
