@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.hidetake.swagger.generator' version '2.19.2'
 }
 
 group = 'app.nftguy'
@@ -19,27 +20,48 @@ repositories {
 }
 
 dependencies {
+    implementation fileTree(dir: 'build/swagger-code-cardanowallet/build/libs', include: ['*.jar'])
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-test'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
     implementation 'com.bloxbean.cardano:cardano-client-lib:0.2.0'
     implementation 'com.bloxbean.cardano:cardano-client-backend-blockfrost:0.2.0'
-    implementation 'solutions.iog:psg-cardano-wallet-api_2.13:0.3.1'
-   // developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'solutions.iog:psg-cardano-wallet-api_2.13:0.3.4'
     implementation 'org.json:json:20220320'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //test dependencies
     testImplementation 'org.awaitility:awaitility:4.2.0'
-    testImplementation ('org.springframework.boot:spring-boot-starter-test'){
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
         //fix conflict with org.json:json
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
-}
 
+    //cardano wallet openapi dependencies
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.35'  // Swagger Codegen V3
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    implementation 'com.squareup.okhttp:logging-interceptor:2.7.5'
+    implementation 'org.netbeans.external:com-google-gson:RELEASE113'
+    implementation 'io.gsonfire:gson-fire:1.8.5'
+    implementation "com.github.joschi.jackson:jackson-datatype-threetenbp:2.6.4"
+}
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+swaggerSources {
+    cardanowallet {
+        inputFile = file('cardano-wallet-openapi/cardano-wallet-openapi.yaml')
+        code {
+            language = 'java'
+            configFile = file('cardano-wallet-openapi/cardano-wallet-openapi-config.json')
+            templateDir =  file('cardano-wallet-openapi/template')
+        }
+    }
+}
+
+

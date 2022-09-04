@@ -1,1 +1,3 @@
 rootProject.name = 'nftapi'
+include ':CardanoWalletAPI'
+project(':CardanoWalletAPI').projectDir = new File('build/swagger-code-cardanowallet')

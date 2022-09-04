@@ -1,0 +1,6 @@
+{
+	"artifactId":"cardanowallet-api-client",
+	"apiPackage":"org.openapitools.cardanowalletclient.api",
+	"invokerPackage":"org.openapitools.cardanowalletclient",
+	"modelPackage":"org.openapitools.cardanowalletclient.model"
+}
