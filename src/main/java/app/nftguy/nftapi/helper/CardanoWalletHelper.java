@@ -1,70 +1,54 @@
 package app.nftguy.nftapi.helper;
 
-import akka.actor.ActorSystem;
-import iog.psg.cardano.CardanoApiCodec;
+import org.openapitools.cardanowalletclient.ApiClient;
+import org.openapitools.cardanowalletclient.ApiException;
+import org.openapitools.cardanowalletclient.api.AddressesApi;
+import org.openapitools.cardanowalletclient.api.NetworkApi;
+import org.openapitools.cardanowalletclient.model.ApiNetworkInformationSyncProgress;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import iog.psg.cardano.jpi.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 public class CardanoWalletHelper {
 
     String walletId;
-    CardanoApi api;
+    AddressesApi addressesApi;
+    NetworkApi networkApi;
 
-    CardanoApiCodec.Wallet wallet;
+    List<String> availableAddresses = new ArrayList<>();
 
-    List<CardanoApiCodec.WalletAddressId> availableAddresses = new ArrayList<>();
-
-    public CardanoWalletHelper(Environment environment) throws CardanoApiException {
-        String baseURL = String.format("%s:%s/v2/",
-                environment.getProperty("wallet.url"), environment.getProperty("wallet.port"));
+    public CardanoWalletHelper(Environment environment) throws CardanoApiException, ApiException {
+        String baseURL = String.format("%s:%s/v2",
+                environment.getProperty("wallet.url"),
+                environment.getProperty("wallet.port"));
         this.walletId = environment.getProperty("wallet.walletId");
 
-        ActorSystem as = ActorSystem.create();
-        ExecutorService es = Executors.newFixedThreadPool(10);
-
-        CardanoApiBuilder builder =
-                CardanoApiBuilder.create(baseURL)
-                        .withActorSystem(as) // <- ActorSystem optional
-                        .withExecutorService(es); // <- ExecutorService optional
-        api = builder.build();
+        ApiClient apiClient = new ApiClient();
+        apiClient.setBasePath(baseURL);
+        this.addressesApi = new AddressesApi(apiClient);
+        this.networkApi = new NetworkApi(apiClient);
         refreshAddresses();
-        getWallet();
     }
 
-    private void refreshAddresses() throws CardanoApiException {
-        api.listAddresses(this.walletId).whenComplete((addresses, throwable) ->{
-            this.availableAddresses = new ArrayList<>();
-            for (CardanoApiCodec.WalletAddressId address:
-                    addresses) {
-                if(address.state().toString().equals("Some(unused)")){
-                    this.availableAddresses.add(address);
-                }
-            }
+    private void refreshAddresses() throws ApiException {
+        this.availableAddresses.clear();
+        this.addressesApi.listAddresses(this.walletId, "unused").forEach(data ->{
+            this.availableAddresses.add(data.getId());
         });
     }
 
-    private void getWallet() throws CardanoApiException {
-        api.getWallet(walletId).whenComplete((wallet, throwable) -> {
-            this.wallet = wallet;
-        });
+     public ApiNetworkInformationSyncProgress getNetworkInfo() throws ApiException {
+        return networkApi.getNetworkInformation().getSyncProgress();
     }
 
-     public CompletionStage<CardanoApiCodec.NetworkInfo> getNetworkInfo() throws CardanoApiException {
-        return api.networkInfo();
-    }
-
-    public List<CardanoApiCodec.WalletAddressId> getUnusedAddresses() {
+    public List<String> getUnusedAddresses() {
         try {
             refreshAddresses();
-        } catch (CardanoApiException e) {
+        } catch (ApiException e) {
             throw new RuntimeException(e);
         }
         return availableAddresses;

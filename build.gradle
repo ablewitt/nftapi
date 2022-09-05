@@ -59,7 +59,7 @@ swaggerSources {
         code {
             language = 'java'
             configFile = file('cardano-wallet-openapi/cardano-wallet-openapi-config.json')
-            templateDir =  file('cardano-wallet-openapi/template')
+            templateDir = file('cardano-wallet-openapi/template')
         }
     }
 }

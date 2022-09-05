@@ -50,13 +50,13 @@ public class AddressHelper {
         pendingAddresses.addAll(transactionRepository.findAddressByPaymentState(PaymentState.PENDING));
         pendingAddresses.addAll(transactionRepository.findAddressByPaymentState(PaymentState.UPLOADING));
         pendingAddresses.addAll(transactionRepository.findAddressByPaymentState(PaymentState.COMPLETED));
-        List<CardanoApiCodec.WalletAddressId> unusedAddresses =
+        List<String> unusedAddresses =
                 cardanoWalletHelper.getUnusedAddresses();
         String nextAddress = "";
 
-        for (CardanoApiCodec.WalletAddressId unusedAddress:
+        for (String unusedAddress:
              unusedAddresses) {
-            nextAddress = unusedAddress.id();
+            nextAddress = unusedAddress;
             for (NftTransactionAddress pendingAddress:
                  pendingAddresses) {
                 if (nextAddress.equals(pendingAddress.getNftPayAddress())){
