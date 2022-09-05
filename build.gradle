@@ -28,7 +28,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.bloxbean.cardano:cardano-client-lib:0.2.0'
     implementation 'com.bloxbean.cardano:cardano-client-backend-blockfrost:0.2.0'
-    //implementation 'solutions.iog:psg-cardano-wallet-api_2.13:0.3.4'
     implementation 'org.json:json:20220320'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
