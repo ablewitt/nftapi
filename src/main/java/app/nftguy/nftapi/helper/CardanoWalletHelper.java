@@ -7,7 +7,6 @@ import org.openapitools.cardanowalletclient.api.NetworkApi;
 import org.openapitools.cardanowalletclient.model.ApiNetworkInformationSyncProgress;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import iog.psg.cardano.jpi.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class CardanoWalletHelper {
 
     List<String> availableAddresses = new ArrayList<>();
 
-    public CardanoWalletHelper(Environment environment) throws CardanoApiException, ApiException {
+    public CardanoWalletHelper(Environment environment) throws ApiException {
         String baseURL = String.format("%s:%s/v2",
                 environment.getProperty("wallet.url"),
                 environment.getProperty("wallet.port"));

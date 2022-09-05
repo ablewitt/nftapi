@@ -6,7 +6,6 @@ import app.nftguy.nftapi.repository.TransactionRepository;
 import com.bloxbean.cardano.client.api.exception.ApiException;
 import com.bloxbean.cardano.client.backend.api.AddressService;
 import com.bloxbean.cardano.client.backend.model.TxContentOutputAmount;
-import iog.psg.cardano.CardanoApiCodec;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;

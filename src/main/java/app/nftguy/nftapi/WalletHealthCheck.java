@@ -1,7 +1,6 @@
 package app.nftguy.nftapi;
 
 import app.nftguy.nftapi.helper.CardanoWalletHelper;
-import iog.psg.cardano.CardanoApiCodec;
 import org.openapitools.cardanowalletclient.model.ApiNetworkInformationSyncProgress;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
