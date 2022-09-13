@@ -70,15 +70,18 @@ public class MintNFTServiceTest {
         attributes.put("image", ipfsLink);
         MetaData metaData = new MetaData(tokenName, attributes, policyHelper.getPolicyId());
 
-        Result<TransactionResult> result =  nftBuilder
+        nftBuilder
                 .setMultiAsset(assetHelper.getMultiAsset())
                 .setPolicy(policyHelper.getPolicy())
                 .setMetaData(metaData)
                 .setReceiveAddress(receiveAddress)
                 .setTTL(1000L)
-                .build()
+                .build();
+
+        Result<TransactionResult> result = nftBuilder
                 .submit();
 
         Assertions.assertTrue(result.isSuccessful(), result.toString());
     }
+
 }

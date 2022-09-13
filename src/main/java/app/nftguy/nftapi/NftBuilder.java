@@ -86,15 +86,16 @@ public class NftBuilder {
                         .build();
         try {
             this.calculateFee();
-            setTransactionCBORBytes();
+            this.generateCBORBytes();
+
         } catch (ApiException | AddressExcepion | CborSerializationException e) {
             throw new RuntimeException(e);
         }
         return this;
     }
 
-    private void setTransactionCBORBytes() throws AddressExcepion, CborSerializationException, ApiException {
-        transactionCBORBytes = blockFrostHelper
+    private void generateCBORBytes() throws AddressExcepion, CborSerializationException, ApiException {
+        this.transactionCBORBytes = blockFrostHelper
                 .getTxnHelperService()
                 .getTransactionBuilder()
                 .createSignedMintTransaction(this.mintTransaction, this.detailsParams, this.metaData);
