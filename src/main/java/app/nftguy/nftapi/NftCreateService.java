@@ -120,7 +120,7 @@ public class NftCreateService {
                 logger.info(String.format("Image upload cid %s", uploadResponse.getValue().getCid()));
                try {
                     initialiseComponents(nftName);
-                    attributes.put("image", uploadResponse.getValue().getCid());
+                    attributes.put("image",String.format("ipfs://%s",uploadResponse.getValue().getCid()));
                     NftBuilder nftBuilder =
                             buildNft(new MetaData(nftName,attributes, policyHelper.getPolicyId()), receiveAddress);
                     nftTransaction.setNetworkFee(nftBuilder.getFee());
