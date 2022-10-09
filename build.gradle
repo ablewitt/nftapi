@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.hidetake.swagger.generator' version '2.19.2'
+    id "com.diffplug.spotless" version "6.11.0"
 }
 
 group = 'app.nftguy'
@@ -50,6 +51,16 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+spotless {
+    java {
+        // Use the default importOrder configuration
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+        formatAnnotations()  // fixes formatting of type annotation
+    }
 }
 
 swaggerSources {

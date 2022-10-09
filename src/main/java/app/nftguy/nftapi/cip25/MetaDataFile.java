@@ -3,52 +3,50 @@ package app.nftguy.nftapi.cip25;
 import org.json.JSONObject;
 
 public class MetaDataFile {
-    private String name;
-    private String mediaType;
-    private String src;
-    private JSONObject json = new JSONObject();
+  private String name;
+  private String mediaType;
+  private String src;
+  private JSONObject json = new JSONObject();
 
-    public MetaDataFile(String name, String mediaType, String src) {
-        this.name = name;
-        this.mediaType = mediaType;
-        this.src = src;
+  public MetaDataFile(String name, String mediaType, String src) {
+    this.name = name;
+    this.mediaType = mediaType;
+    this.src = src;
 
-        json.put("name", this.name);
-        json.put("mediaType", this.mediaType);
-        json.put("src", this.src);
-    }
+    json.put("name", this.name);
+    json.put("mediaType", this.mediaType);
+    json.put("src", this.src);
+  }
 
-    public JSONObject get(){
-        return this.json;
-    }
+  public JSONObject get() {
+    return this.json;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getMediaType() {
-        return mediaType;
-    }
+  public String getMediaType() {
+    return mediaType;
+  }
 
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-    }
+  public void setMediaType(String mediaType) {
+    this.mediaType = mediaType;
+  }
 
-    public String getSrc() {
-        return src;
-    }
+  public String getSrc() {
+    return src;
+  }
 
-    public void setSrc(String src) {
-        this.src = src;
-    }
+  public void setSrc(String src) {
+    this.src = src;
+  }
 
-    public String toString(){
-        return json.toString();
-    }
-
-
+  public String toString() {
+    return json.toString();
+  }
 }

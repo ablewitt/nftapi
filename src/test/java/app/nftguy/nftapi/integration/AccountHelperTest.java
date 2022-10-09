@@ -9,11 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class AccountHelperTest {
 
-    @Autowired
-    AccountHelper accountHelper;
+  @Autowired AccountHelper accountHelper;
 
-    @Test
-    void create(){
-        Assertions.assertEquals(accountHelper.getClass(), AccountHelper.class);
-    }
+  @Test
+  void create() {
+    Assertions.assertEquals(accountHelper.getClass(), AccountHelper.class);
+  }
 }

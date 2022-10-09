@@ -11,28 +11,24 @@ import org.springframework.core.env.Environment;
 @SpringBootTest
 public class CardanoWalletHelperTest {
 
-    @Autowired
-    private Environment environment;
+  @Autowired private Environment environment;
 
-    @Autowired
-    CardanoWalletHelper cardanoWalletHelper;
+  @Autowired CardanoWalletHelper cardanoWalletHelper;
 
-    @Test
-    void create(){
-        Assertions.assertEquals(cardanoWalletHelper.getClass(), CardanoWalletHelper.class);
+  @Test
+  void create() {
+    Assertions.assertEquals(cardanoWalletHelper.getClass(), CardanoWalletHelper.class);
+  }
+
+  @Test
+  void getNetworkInfo() throws ApiException {
+    cardanoWalletHelper.getNetworkInfo();
+  }
+
+  @Test
+  void getAddresses() {
+    for (String address : cardanoWalletHelper.getUnusedAddresses()) {
+      Assertions.assertTrue(address.contains("addr"));
     }
-
-    @Test
-    void getNetworkInfo() throws ApiException {
-        cardanoWalletHelper.getNetworkInfo();
-    }
-
-    @Test
-    void getAddresses() {
-        for (String address:
-                cardanoWalletHelper.getUnusedAddresses()) {
-            Assertions.assertTrue(address.contains("addr"));
-        }
-    }
-
+  }
 }

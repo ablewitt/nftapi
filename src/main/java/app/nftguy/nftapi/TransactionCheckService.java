@@ -13,36 +13,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionCheckService {
 
-    BlockFrostHelper blockFrostHelper;
-    TransactionRepository transactionRepository;
+  BlockFrostHelper blockFrostHelper;
+  TransactionRepository transactionRepository;
 
-    Long currentBlock;
+  Long currentBlock;
 
-    Logger logger = LoggerFactory.getLogger(TransactionCheckService.class);
+  Logger logger = LoggerFactory.getLogger(TransactionCheckService.class);
 
-    TransactionCheckService(BlockFrostHelper blockFrostHelper, TransactionRepository transactionRepository){
-        this.blockFrostHelper = blockFrostHelper;
-        this.transactionRepository = transactionRepository;
+  TransactionCheckService(
+      BlockFrostHelper blockFrostHelper, TransactionRepository transactionRepository) {
+    this.blockFrostHelper = blockFrostHelper;
+    this.transactionRepository = transactionRepository;
+  }
+
+  @Scheduled(fixedDelay = 60000)
+  public void scheduleExpirationCheck() throws ApiException {
+    logger.debug("Checking for expired transactions");
+    for (NftTransaction nftTransaction : transactionRepository.findAll()) {
+      checkTtl(nftTransaction);
     }
+  }
 
-    @Scheduled(fixedDelay = 60000)
-    public void scheduleExpirationCheck() throws ApiException {
-        logger.debug("Checking for expired transactions");
-        for (NftTransaction nftTransaction:
-             transactionRepository.findAll()) {
-            checkTtl(nftTransaction);
-        }
+  public void checkTtl(NftTransaction nftTransaction) throws ApiException {
+    if (nftTransaction.getPaymentState().equals(PaymentState.PENDING)) {
+      this.currentBlock = blockFrostHelper.getBlockService().getLatestBlock().getValue().getSlot();
+      if (nftTransaction.getTtl().compareTo(currentBlock) < 0) {
+        logger.info(String.format("Transaction %s expired", nftTransaction.getId()));
+        nftTransaction.setPaymentState(PaymentState.EXPIRED);
+        transactionRepository.save(nftTransaction);
+      }
     }
-
-    public void checkTtl(NftTransaction nftTransaction) throws ApiException {
-        if(nftTransaction.getPaymentState().equals(PaymentState.PENDING)){
-            this.currentBlock = blockFrostHelper.getBlockService().getLatestBlock().getValue().getSlot();
-            if (nftTransaction.getTtl().compareTo(currentBlock) < 0 ){
-                logger.info(String.format("Transaction %s expired", nftTransaction.getId()));
-                nftTransaction.setPaymentState(PaymentState.EXPIRED);
-                transactionRepository.save(nftTransaction);
-            }
-        }
-
-    }
+  }
 }

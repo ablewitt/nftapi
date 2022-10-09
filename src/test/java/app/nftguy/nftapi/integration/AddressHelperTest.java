@@ -10,18 +10,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class AddressHelperTest {
 
-    @Autowired
-    AddressHelper addressHelper;
+  @Autowired AddressHelper addressHelper;
 
-    @Test
-    void create(){
-        Assertions.assertEquals(addressHelper.getClass(), AddressHelper.class);
-    }
+  @Test
+  void create() {
+    Assertions.assertEquals(addressHelper.getClass(), AddressHelper.class);
+  }
 
-    @Test
-    void getAddressBalanceTest() throws ApiException {
-       Assertions.assertTrue(
-               addressHelper
-                       .getAddressBalance("addr_test1qzlukggg0kpd6dgs2eumh6nsajx4mtsl0urnsawnekvkfgesl2jjsnfkffuhuuug5vywcyh0704hpyldjrzjacts4qpqjfcz38").longValue() >= 0);
-    }
+  @Test
+  void getAddressBalanceTest() throws ApiException {
+    Assertions.assertTrue(
+        addressHelper
+                .getAddressBalance(
+                    "addr_test1qzlukggg0kpd6dgs2eumh6nsajx4mtsl0urnsawnekvkfgesl2jjsnfkffuhuuug5vywcyh0704hpyldjrzjacts4qpqjfcz38")
+                .longValue()
+            >= 0);
+  }
 }

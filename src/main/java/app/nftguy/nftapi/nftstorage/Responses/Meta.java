@@ -1,16 +1,10 @@
-
 package app.nftguy.nftapi.nftstorage.Responses;
 
-import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-
-})
+@JsonPropertyOrder({})
 @Generated("jsonschema2pojo")
-public class Meta {
-
-
-}
+public class Meta {}

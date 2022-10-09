@@ -7,9 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class NftTransactionAddress {
 
-    private String id;
+  private String id;
 
-    private String nftPayAddress;
+  private String nftPayAddress;
 
-    private PaymentState paymentState;
+  private PaymentState paymentState;
 }

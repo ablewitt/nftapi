@@ -8,22 +8,22 @@ import com.bloxbean.cardano.client.exception.CborSerializationException;
 
 public class KeyHelper {
 
-    private SecretKey sKey;
-    private VerificationKey vKey;
-    private Keys keys;
+  private SecretKey sKey;
+  private VerificationKey vKey;
+  private Keys keys;
 
-    public KeyHelper() throws CborSerializationException {
-        //create keys
-        this.keys = KeyGenUtil.generateKey();
-        this.vKey = keys.getVkey();
-        this.sKey = keys.getSkey();
-    }
+  public KeyHelper() throws CborSerializationException {
+    // create keys
+    this.keys = KeyGenUtil.generateKey();
+    this.vKey = keys.getVkey();
+    this.sKey = keys.getSkey();
+  }
 
-    public SecretKey getSKey() {
-        return sKey;
-    }
+  public SecretKey getSKey() {
+    return sKey;
+  }
 
-    public VerificationKey getVKey() {
-        return vKey;
-    }
+  public VerificationKey getVKey() {
+    return vKey;
+  }
 }

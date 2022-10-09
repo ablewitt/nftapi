@@ -1,180 +1,192 @@
-
 package app.nftguy.nftapi.nftstorage.Responses;
 
-import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "batchRootCid",
-    "lastChange",
-    "miner",
-    "network",
-    "pieceCid",
-    "status",
-    "statusText",
-    "chainDealID",
-    "dealActivation",
-    "dealExpiration"
+  "batchRootCid",
+  "lastChange",
+  "miner",
+  "network",
+  "pieceCid",
+  "status",
+  "statusText",
+  "chainDealID",
+  "dealActivation",
+  "dealExpiration"
 })
 @Generated("jsonschema2pojo")
 public class Deal {
 
-    @JsonProperty("batchRootCid")
-    private String batchRootCid;
-    @JsonProperty("lastChange")
-    private String lastChange;
-    @JsonProperty("miner")
-    private String miner;
-    @JsonProperty("network")
-    private String network;
-    @JsonProperty("pieceCid")
-    private String pieceCid;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("statusText")
-    private String statusText;
-    @JsonProperty("chainDealID")
-    private Integer chainDealID;
-    @JsonProperty("dealActivation")
-    private String dealActivation;
-    @JsonProperty("dealExpiration")
-    private String dealExpiration;
+  @JsonProperty("batchRootCid")
+  private String batchRootCid;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Deal() {
-    }
+  @JsonProperty("lastChange")
+  private String lastChange;
 
-    /**
-     * 
-     * @param statusText
-     * @param lastChange
-     * @param dealActivation
-     * @param chainDealID
-     * @param pieceCid
-     * @param dealExpiration
-     * @param batchRootCid
-     * @param miner
-     * @param network
-     * @param status
-     */
-    public Deal(String batchRootCid, String lastChange, String miner, String network, String pieceCid, String status, String statusText, Integer chainDealID, String dealActivation, String dealExpiration) {
-        super();
-        this.batchRootCid = batchRootCid;
-        this.lastChange = lastChange;
-        this.miner = miner;
-        this.network = network;
-        this.pieceCid = pieceCid;
-        this.status = status;
-        this.statusText = statusText;
-        this.chainDealID = chainDealID;
-        this.dealActivation = dealActivation;
-        this.dealExpiration = dealExpiration;
-    }
+  @JsonProperty("miner")
+  private String miner;
 
-    @JsonProperty("batchRootCid")
-    public String getBatchRootCid() {
-        return batchRootCid;
-    }
+  @JsonProperty("network")
+  private String network;
 
-    @JsonProperty("batchRootCid")
-    public void setBatchRootCid(String batchRootCid) {
-        this.batchRootCid = batchRootCid;
-    }
+  @JsonProperty("pieceCid")
+  private String pieceCid;
 
-    @JsonProperty("lastChange")
-    public String getLastChange() {
-        return lastChange;
-    }
+  @JsonProperty("status")
+  private String status;
 
-    @JsonProperty("lastChange")
-    public void setLastChange(String lastChange) {
-        this.lastChange = lastChange;
-    }
+  @JsonProperty("statusText")
+  private String statusText;
 
-    @JsonProperty("miner")
-    public String getMiner() {
-        return miner;
-    }
+  @JsonProperty("chainDealID")
+  private Integer chainDealID;
 
-    @JsonProperty("miner")
-    public void setMiner(String miner) {
-        this.miner = miner;
-    }
+  @JsonProperty("dealActivation")
+  private String dealActivation;
 
-    @JsonProperty("network")
-    public String getNetwork() {
-        return network;
-    }
+  @JsonProperty("dealExpiration")
+  private String dealExpiration;
 
-    @JsonProperty("network")
-    public void setNetwork(String network) {
-        this.network = network;
-    }
+  /** No args constructor for use in serialization */
+  public Deal() {}
 
-    @JsonProperty("pieceCid")
-    public String getPieceCid() {
-        return pieceCid;
-    }
+  /**
+   * @param statusText
+   * @param lastChange
+   * @param dealActivation
+   * @param chainDealID
+   * @param pieceCid
+   * @param dealExpiration
+   * @param batchRootCid
+   * @param miner
+   * @param network
+   * @param status
+   */
+  public Deal(
+      String batchRootCid,
+      String lastChange,
+      String miner,
+      String network,
+      String pieceCid,
+      String status,
+      String statusText,
+      Integer chainDealID,
+      String dealActivation,
+      String dealExpiration) {
+    super();
+    this.batchRootCid = batchRootCid;
+    this.lastChange = lastChange;
+    this.miner = miner;
+    this.network = network;
+    this.pieceCid = pieceCid;
+    this.status = status;
+    this.statusText = statusText;
+    this.chainDealID = chainDealID;
+    this.dealActivation = dealActivation;
+    this.dealExpiration = dealExpiration;
+  }
 
-    @JsonProperty("pieceCid")
-    public void setPieceCid(String pieceCid) {
-        this.pieceCid = pieceCid;
-    }
+  @JsonProperty("batchRootCid")
+  public String getBatchRootCid() {
+    return batchRootCid;
+  }
 
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
+  @JsonProperty("batchRootCid")
+  public void setBatchRootCid(String batchRootCid) {
+    this.batchRootCid = batchRootCid;
+  }
 
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  @JsonProperty("lastChange")
+  public String getLastChange() {
+    return lastChange;
+  }
 
-    @JsonProperty("statusText")
-    public String getStatusText() {
-        return statusText;
-    }
+  @JsonProperty("lastChange")
+  public void setLastChange(String lastChange) {
+    this.lastChange = lastChange;
+  }
 
-    @JsonProperty("statusText")
-    public void setStatusText(String statusText) {
-        this.statusText = statusText;
-    }
+  @JsonProperty("miner")
+  public String getMiner() {
+    return miner;
+  }
 
-    @JsonProperty("chainDealID")
-    public Integer getChainDealID() {
-        return chainDealID;
-    }
+  @JsonProperty("miner")
+  public void setMiner(String miner) {
+    this.miner = miner;
+  }
 
-    @JsonProperty("chainDealID")
-    public void setChainDealID(Integer chainDealID) {
-        this.chainDealID = chainDealID;
-    }
+  @JsonProperty("network")
+  public String getNetwork() {
+    return network;
+  }
 
-    @JsonProperty("dealActivation")
-    public String getDealActivation() {
-        return dealActivation;
-    }
+  @JsonProperty("network")
+  public void setNetwork(String network) {
+    this.network = network;
+  }
 
-    @JsonProperty("dealActivation")
-    public void setDealActivation(String dealActivation) {
-        this.dealActivation = dealActivation;
-    }
+  @JsonProperty("pieceCid")
+  public String getPieceCid() {
+    return pieceCid;
+  }
 
-    @JsonProperty("dealExpiration")
-    public String getDealExpiration() {
-        return dealExpiration;
-    }
+  @JsonProperty("pieceCid")
+  public void setPieceCid(String pieceCid) {
+    this.pieceCid = pieceCid;
+  }
 
-    @JsonProperty("dealExpiration")
-    public void setDealExpiration(String dealExpiration) {
-        this.dealExpiration = dealExpiration;
-    }
+  @JsonProperty("status")
+  public String getStatus() {
+    return status;
+  }
 
+  @JsonProperty("status")
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  @JsonProperty("statusText")
+  public String getStatusText() {
+    return statusText;
+  }
+
+  @JsonProperty("statusText")
+  public void setStatusText(String statusText) {
+    this.statusText = statusText;
+  }
+
+  @JsonProperty("chainDealID")
+  public Integer getChainDealID() {
+    return chainDealID;
+  }
+
+  @JsonProperty("chainDealID")
+  public void setChainDealID(Integer chainDealID) {
+    this.chainDealID = chainDealID;
+  }
+
+  @JsonProperty("dealActivation")
+  public String getDealActivation() {
+    return dealActivation;
+  }
+
+  @JsonProperty("dealActivation")
+  public void setDealActivation(String dealActivation) {
+    this.dealActivation = dealActivation;
+  }
+
+  @JsonProperty("dealExpiration")
+  public String getDealExpiration() {
+    return dealExpiration;
+  }
+
+  @JsonProperty("dealExpiration")
+  public void setDealExpiration(String dealExpiration) {
+    this.dealExpiration = dealExpiration;
+  }
 }

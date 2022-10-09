@@ -1,60 +1,51 @@
-
 package app.nftguy.nftapi.nftstorage.Responses;
 
-import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "name",
-    "message"
-})
+@JsonPropertyOrder({"name", "message"})
 @Generated("jsonschema2pojo")
 public class Error {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("message")
-    private String message;
+  @JsonProperty("name")
+  private String name;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Error() {
-    }
+  @JsonProperty("message")
+  private String message;
 
-    /**
-     * 
-     * @param name
-     * @param message
-     */
-    public Error(String name, String message) {
-        super();
-        this.name = name;
-        this.message = message;
-    }
+  /** No args constructor for use in serialization */
+  public Error() {}
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
+  /**
+   * @param name
+   * @param message
+   */
+  public Error(String name, String message) {
+    super();
+    this.name = name;
+    this.message = message;
+  }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
+  @JsonProperty("name")
+  public String getName() {
+    return name;
+  }
 
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
-    }
+  @JsonProperty("name")
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  @JsonProperty("message")
+  public String getMessage() {
+    return message;
+  }
 
+  @JsonProperty("message")
+  public void setMessage(String message) {
+    this.message = message;
+  }
 }

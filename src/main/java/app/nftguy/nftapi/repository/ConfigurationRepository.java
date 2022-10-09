@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface ConfigurationRepository extends MongoRepository<NftTransactionConfig, Integer> {
 
-    @Query()
-    NftTransactionConfig findItemById(Integer id);
+  @Query()
+  NftTransactionConfig findItemById(Integer id);
 
-    public long count();
+  public long count();
 }
