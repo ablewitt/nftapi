@@ -15,6 +15,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,7 +122,10 @@ public class NftCreateService {
       logger.info(String.format("Image upload cid %s", uploadResponse.getValue().getCid()));
       try {
         initialiseComponents(nftName);
-        attributes.put("image", String.format("%s", uploadResponse.getValue().getCid()));
+        JSONArray ipfsLink = new JSONArray();
+        ipfsLink.put("ipfs://");
+        ipfsLink.put(uploadResponse.getValue().getCid());
+        attributes.put("image", ipfsLink);
         NftBuilder nftBuilder =
             buildNft(new MetaData(nftName, attributes, policyHelper.getPolicyId()), receiveAddress);
         nftTransaction.setNetworkFee(nftBuilder.getFee());
