@@ -15,3 +15,39 @@ chmod +x build/swagger-code-cardanowallet/gradlew
 cd build/swagger-code-cardanowallet
 ./gradlew jar
 ```
+
+## Endpoint health
+Spring actuator endpoint health is available from ```/actuator/health```.
+Cardano wallet progress can be null if 100% or unknown
+
+```json
+{
+  "status": "UP",
+  "components": {
+    "cardanoWalletAPI": {
+      "status": "UP",
+      "details": {
+        "ready": "null"
+      }
+    },
+    "diskSpace": {
+      "status": "UP",
+      "details": {
+        "total": 389000699904,
+        "free": 180503797760,
+        "threshold": 10485760,
+        "exists": true
+      }
+    },
+    "mongo": {
+      "status": "UP",
+      "details": {
+        "version": "6.1.0"
+      }
+    },
+    "ping": {
+      "status": "UP"
+    }
+  }
+}
+```

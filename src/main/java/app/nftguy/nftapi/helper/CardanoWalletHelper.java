@@ -56,8 +56,8 @@ public class CardanoWalletHelper {
             });
   }
 
-  public ApiNetworkInformationSyncProgress getNetworkInfo() throws ApiException {
-    return networkApi.getNetworkInformation().getSyncProgress();
+  public InlineResponse20012 getNetworkInfo() throws ApiException {
+    return networkApi.getNetworkInformation();
   }
 
   public List<String> getUnusedAddresses() {
