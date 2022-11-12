@@ -6,15 +6,11 @@ nftguy api
 ```bash
 ./gradlew generateSwaggerCodeCardanowallet
 ```
-2. Give gradlew in cardano wallet client build execute permissions
+2. Build the cardano wallet jar (using -p to switch project)
 ```bash
-chmod +x build/swagger-code-cardanowallet/gradlew
+./gradlew -p build/swagger-code-cardanowallet jar
 ```
-3. Create cardano wallet client jar file
-```bash
-cd build/swagger-code-cardanowallet
-./gradlew jar
-```
+
 
 ## Endpoint health
 Spring actuator endpoint health is available from ```/actuator/health```.
