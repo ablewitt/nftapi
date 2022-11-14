@@ -57,7 +57,7 @@ public class NftCreateService {
 
     JSONObject attributes = userInput.getJSONObject("attributes");
     NftTransaction nftTransaction = emptyTransaction(userInput);
-    if (!userInput.getString("email").isEmpty()){
+    if (userInput.has("email") && !userInput.getString("email").isEmpty()){
       nftTransaction.setEmail(userInput.getString("email"));
     }
     transactionRepository.save(nftTransaction);
