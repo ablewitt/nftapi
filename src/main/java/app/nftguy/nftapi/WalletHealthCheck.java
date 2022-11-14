@@ -1,12 +1,11 @@
 package app.nftguy.nftapi;
 
 import app.nftguy.nftapi.helper.CardanoWalletHelper;
+import java.util.HashMap;
 import org.openapitools.cardanowalletclient.model.InlineResponse20012;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
 
 @Component("cardanoWalletAPI")
 public class WalletHealthCheck implements HealthIndicator {
@@ -32,8 +31,10 @@ public class WalletHealthCheck implements HealthIndicator {
     try {
       InlineResponse20012 response = cardanoWalletHelper.getNetworkInfo();
       status.put(
-              response.getSyncProgress().getStatus().toString(),
-              response.getSyncProgress().getProgress() == null ? "null" : response.getSyncProgress().getProgress().getQuantity().toString());
+          response.getSyncProgress().getStatus().toString(),
+          response.getSyncProgress().getProgress() == null
+              ? "null"
+              : response.getSyncProgress().getProgress().getQuantity().toString());
     } catch (Exception e) {
       status.put("Error", "Wallet not reachable");
     }

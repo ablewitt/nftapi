@@ -2,6 +2,7 @@ package app.nftguy.nftapi;
 
 import app.nftguy.nftapi.helper.AddressHelper;
 import app.nftguy.nftapi.helper.CardanoWalletHelper;
+import app.nftguy.nftapi.helper.EmailService;
 import app.nftguy.nftapi.model.NftTransaction;
 import app.nftguy.nftapi.model.NftTransactionDraft;
 import app.nftguy.nftapi.model.PaymentState;
@@ -21,6 +22,7 @@ public class NftTransactionService {
   NftTransaction nftTransaction;
   CardanoWalletHelper cardanoWalletHelper;
   TransactionCheckService transactionCheckService;
+  EmailService emailService;
 
   Logger logger = LoggerFactory.getLogger(NftTransactionService.class);
 
@@ -28,11 +30,13 @@ public class NftTransactionService {
       AddressHelper addressHelper,
       TransactionRepository transactionRepository,
       CardanoWalletHelper cardanoWalletHelper,
-      TransactionCheckService transactionCheckService) {
+      TransactionCheckService transactionCheckService,
+      EmailService emailService) {
     this.addressHelper = addressHelper;
     this.transactionRepository = transactionRepository;
     this.cardanoWalletHelper = cardanoWalletHelper;
     this.transactionCheckService = transactionCheckService;
+    this.emailService = emailService;
   }
 
   public NftTransactionDraft checkStatus(String id) throws ApiException {
@@ -68,6 +72,7 @@ public class NftTransactionService {
       nftTransaction.setPaymentState(PaymentState.COMPLETED);
       nftTransaction.setTransactionId(result.getId());
       transactionRepository.save(nftTransaction);
+      emailService.sendMimeMessage(nftTransaction);
       return result.getId();
     } else {
       logger.warn(String.format("Failed processing transaction %s", nftTransaction.getId()));

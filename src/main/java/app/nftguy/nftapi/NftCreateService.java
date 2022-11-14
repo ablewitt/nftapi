@@ -15,7 +15,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -58,6 +57,9 @@ public class NftCreateService {
 
     JSONObject attributes = userInput.getJSONObject("attributes");
     NftTransaction nftTransaction = emptyTransaction(userInput);
+    if (!userInput.getString("email").isEmpty()){
+      nftTransaction.setEmail(userInput.getString("email"));
+    }
     transactionRepository.save(nftTransaction);
     logger.info(
         String.format(

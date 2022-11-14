@@ -32,6 +32,16 @@ wallet.port=<port>
 wallet.walletId=<wallet id>
 wallet.passphrase=<wallet passphrase>
 
+#email settings
+email.template=src/main/resources/email-template.html
+email.fromaddress=<from address>
+spring.mail.host=<mail host>
+spring.mail.port=<port>
+spring.mail.username=<username>
+spring.mail.password=<>password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.ssl.enable=true
+
 
 
 

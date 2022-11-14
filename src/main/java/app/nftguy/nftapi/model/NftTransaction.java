@@ -26,6 +26,8 @@ public class NftTransaction {
 
   private BigInteger createFee;
 
+  private String email;
+
   private Long ttl;
 
   public NftTransaction(
@@ -104,5 +106,13 @@ public class NftTransaction {
 
   public void setPaymentState(PaymentState paymentState) {
     this.paymentState = paymentState;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 }
