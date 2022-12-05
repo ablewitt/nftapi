@@ -11,7 +11,7 @@ spring.data.mongodb.database=nftguy
 server.error.include-stacktrace=never
 
 # Cardano
-cardano.network=<options: testnet, mainnet>
+cardano.network=<options: testnet, mainnet, preprod, preview>
 account.mnemonic=<cardano account mnemonic>
 
 # Create Defaults - will be written to database on first run

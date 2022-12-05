@@ -1,6 +1,6 @@
 package app.nftguy.nftapi;
 
-import app.nftguy.nftapi.model.NftTransactionDraft;
+import app.nftguy.nftapi.model.TransactionClientModel;
 import com.bloxbean.cardano.client.api.exception.ApiException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -10,27 +10,27 @@ import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*")
 @RestController
-public class CreateController {
+public class ApiController {
 
-  NftCreateService creatorService;
-  NftTransactionService transactionService;
+  CreateService creatorService;
+  TransactionService transactionService;
 
-  CreateController(NftCreateService creatorService, NftTransactionService transactionService) {
+  ApiController(CreateService creatorService, TransactionService transactionService) {
     this.creatorService = creatorService;
     this.transactionService = transactionService;
   }
 
   @PostMapping("/create")
-  public NftTransactionDraft create(
+  public TransactionClientModel create(
       @RequestParam(value = "file") MultipartFile file,
       @RequestParam(value = "user_input") JSONObject userInput)
       throws Exception {
     validateUserInput(userInput);
-    return creatorService.draftTransaction(file, userInput);
+    return creatorService.primeTransaction(file, userInput);
   }
 
   @GetMapping("/transaction")
-  public NftTransactionDraft transactionStatus(@RequestParam(value = "id") String id)
+  public TransactionClientModel transactionStatus(@RequestParam(value = "id") String id)
       throws ApiException {
     return transactionService.checkStatus(id);
   }
