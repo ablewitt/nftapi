@@ -1,9 +1,8 @@
 package app.nftguy.nftapi;
 
 import app.nftguy.nftapi.helper.EmailService;
-import app.nftguy.nftapi.model.NftTransaction;
 import app.nftguy.nftapi.model.PaymentState;
-import java.io.IOException;
+import app.nftguy.nftapi.model.Transaction;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ public class EmailServiceTests {
 
   @Test
   void sendMimeEmail() {
-    NftTransaction nft =
-        new NftTransaction(
+    Transaction nft =
+        new Transaction(
             "addr1thisisanaddress",
             "asdfasdfasdf",
             "addr1thisisanotheraddress",

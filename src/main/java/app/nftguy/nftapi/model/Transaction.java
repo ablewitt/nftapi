@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("nft_transaction")
-public class NftTransaction {
+public class Transaction {
 
   @Id private String id;
 
@@ -30,7 +30,7 @@ public class NftTransaction {
 
   private Long ttl;
 
-  public NftTransaction(
+  public Transaction(
       String nftPayAddress,
       String transactionCBORBytes,
       String nftRxAddress,

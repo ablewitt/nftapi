@@ -4,10 +4,11 @@ import app.nftguy.nftapi.model.*;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-public interface ConfigurationRepository extends MongoRepository<NftTransactionConfig, Integer> {
+public interface ConfigurationRepository
+    extends MongoRepository<TransactionConfiguration, Integer> {
 
   @Query()
-  NftTransactionConfig findItemById(Integer id);
+  TransactionConfiguration findItemById(Integer id);
 
   public long count();
 }

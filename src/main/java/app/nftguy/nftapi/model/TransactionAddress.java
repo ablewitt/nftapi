@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class NftTransactionAddress {
+public class TransactionAddress {
 
   private String id;
 

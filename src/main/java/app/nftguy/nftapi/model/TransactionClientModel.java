@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import lombok.Data;
 
 @Data
-public class NftTransactionDraft {
+public class TransactionClientModel {
 
   private String id;
 
@@ -22,7 +22,7 @@ public class NftTransactionDraft {
 
   private BigInteger nftPayAddressBalance;
 
-  public NftTransactionDraft(
+  public TransactionClientModel(
       String id,
       String transactionId,
       String nftPayAddress,

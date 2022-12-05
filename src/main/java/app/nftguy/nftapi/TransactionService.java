@@ -3,9 +3,9 @@ package app.nftguy.nftapi;
 import app.nftguy.nftapi.helper.AddressHelper;
 import app.nftguy.nftapi.helper.CardanoWalletHelper;
 import app.nftguy.nftapi.helper.EmailService;
-import app.nftguy.nftapi.model.NftTransaction;
-import app.nftguy.nftapi.model.NftTransactionDraft;
 import app.nftguy.nftapi.model.PaymentState;
+import app.nftguy.nftapi.model.Transaction;
+import app.nftguy.nftapi.model.TransactionClientModel;
 import app.nftguy.nftapi.repository.TransactionRepository;
 import com.bloxbean.cardano.client.api.exception.ApiException;
 import java.math.BigInteger;
@@ -15,18 +15,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NftTransactionService {
+public class TransactionService {
 
   AddressHelper addressHelper;
   TransactionRepository transactionRepository;
-  NftTransaction nftTransaction;
+  Transaction transaction;
   CardanoWalletHelper cardanoWalletHelper;
   TransactionCheckService transactionCheckService;
   EmailService emailService;
 
-  Logger logger = LoggerFactory.getLogger(NftTransactionService.class);
+  Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
-  NftTransactionService(
+  TransactionService(
       AddressHelper addressHelper,
       TransactionRepository transactionRepository,
       CardanoWalletHelper cardanoWalletHelper,
@@ -39,43 +39,44 @@ public class NftTransactionService {
     this.emailService = emailService;
   }
 
-  public NftTransactionDraft checkStatus(String id) throws ApiException {
-    this.nftTransaction = this.transactionRepository.findItemById(id);
-    if (!this.nftTransaction.getPaymentState().equals(PaymentState.PENDING)) {
-      return this.transactionRepository.findItemByIdRestricted(id);
+  public TransactionClientModel checkStatus(String id) throws ApiException {
+    this.transaction = this.transactionRepository.findTransactionById(id);
+    if (!this.transaction.getPaymentState().equals(PaymentState.PENDING)) {
+      return this.transactionRepository.createTransactionClientModelById(id);
     }
-    transactionCheckService.checkTtl(this.nftTransaction);
-    NftTransactionDraft nftTransactionDraft = this.transactionRepository.findItemByIdRestricted(id);
+    transactionCheckService.checkTtl(this.transaction);
+    TransactionClientModel transactionClientModel =
+        this.transactionRepository.createTransactionClientModelById(id);
     BigInteger balanceOwing = checkBalanceOwing();
-    nftTransactionDraft.setNftPayAddressBalance(balanceOwing);
+    transactionClientModel.setNftPayAddressBalance(balanceOwing);
     if (balanceOwing.compareTo(new BigInteger("0")) < 1) {
       submit();
     }
-    return nftTransactionDraft;
+    return transactionClientModel;
   }
 
   private BigInteger checkBalanceOwing() throws ApiException {
-    String nftPayAddress = nftTransaction.getNftPayAddress();
+    String nftPayAddress = transaction.getNftPayAddress();
     BigInteger addressBalance = addressHelper.getAddressBalance(nftPayAddress);
-    BigInteger totalBill = nftTransaction.getCreateFee().add(nftTransaction.getNetworkFee());
+    BigInteger totalBill = transaction.getCreateFee().add(transaction.getNetworkFee());
     return totalBill.subtract(addressBalance);
   }
 
   private String submit() {
     InlineResponse2025 result =
-        cardanoWalletHelper.SubmitTransaction(nftTransaction.getTransactionCBORBytes());
+        cardanoWalletHelper.SubmitTransaction(transaction.getTransactionCBORBytes());
     if (result.getId().length() > 1) {
       logger.info(
           String.format(
               "Successfully processed transaction %s, cardano transaction %s",
-              nftTransaction.getId(), result));
-      nftTransaction.setPaymentState(PaymentState.COMPLETED);
-      nftTransaction.setTransactionId(result.getId());
-      transactionRepository.save(nftTransaction);
-      emailService.sendMimeMessage(nftTransaction);
+              transaction.getId(), result));
+      transaction.setPaymentState(PaymentState.COMPLETED);
+      transaction.setTransactionId(result.getId());
+      transactionRepository.save(transaction);
+      emailService.sendMimeMessage(transaction);
       return result.getId();
     } else {
-      logger.warn(String.format("Failed processing transaction %s", nftTransaction.getId()));
+      logger.warn(String.format("Failed processing transaction %s", transaction.getId()));
       throw new RuntimeException(result.toString());
     }
   }

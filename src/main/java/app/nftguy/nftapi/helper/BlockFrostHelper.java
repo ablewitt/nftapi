@@ -3,7 +3,6 @@ package app.nftguy.nftapi.helper;
 import com.bloxbean.cardano.client.api.helper.FeeCalculationService;
 import com.bloxbean.cardano.client.api.helper.TransactionHelperService;
 import com.bloxbean.cardano.client.backend.api.*;
-import com.bloxbean.cardano.client.backend.blockfrost.common.Constants;
 import com.bloxbean.cardano.client.backend.blockfrost.service.BFBackendService;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -24,12 +23,9 @@ public class BlockFrostHelper {
   public BlockFrostHelper(Environment environment) {
     String blockFrostProjKey = environment.getProperty("blockfrost.project_key");
     String network = environment.getProperty("cardano.network");
-    String blockFrostNetwork = Constants.BLOCKFROST_TESTNET_URL;
-    if (network.equalsIgnoreCase("mainnet")) {
-      blockFrostNetwork = Constants.BLOCKFROST_MAINNET_URL;
-    }
-    backendService = new BFBackendService(blockFrostNetwork, blockFrostProjKey);
+    String blockFrostNetwork = String.format("https://cardano-%s.blockfrost.io/api/v0/", network);
 
+    backendService = new BFBackendService(blockFrostNetwork, blockFrostProjKey);
     this.txnHelperService = backendService.getTransactionHelperService();
     this.addressService = backendService.getAddressService();
     this.feeCalcService = backendService.getFeeCalculationService();

@@ -1,8 +1,8 @@
 package app.nftguy.nftapi;
 
 import app.nftguy.nftapi.helper.BlockFrostHelper;
-import app.nftguy.nftapi.model.NftTransaction;
 import app.nftguy.nftapi.model.PaymentState;
+import app.nftguy.nftapi.model.Transaction;
 import app.nftguy.nftapi.repository.TransactionRepository;
 import com.bloxbean.cardano.client.api.exception.ApiException;
 import org.slf4j.Logger;
@@ -29,18 +29,18 @@ public class TransactionCheckService {
   @Scheduled(fixedDelay = 60000)
   public void scheduleExpirationCheck() throws ApiException {
     logger.debug("Checking for expired transactions");
-    for (NftTransaction nftTransaction : transactionRepository.findAll()) {
-      checkTtl(nftTransaction);
+    for (Transaction transaction : transactionRepository.findAll()) {
+      checkTtl(transaction);
     }
   }
 
-  public void checkTtl(NftTransaction nftTransaction) throws ApiException {
-    if (nftTransaction.getPaymentState().equals(PaymentState.PENDING)) {
+  public void checkTtl(Transaction transaction) throws ApiException {
+    if (transaction.getPaymentState().equals(PaymentState.PENDING)) {
       this.currentBlock = blockFrostHelper.getBlockService().getLatestBlock().getValue().getSlot();
-      if (nftTransaction.getTtl().compareTo(currentBlock) < 0) {
-        logger.info(String.format("Transaction %s expired", nftTransaction.getId()));
-        nftTransaction.setPaymentState(PaymentState.EXPIRED);
-        transactionRepository.save(nftTransaction);
+      if (transaction.getTtl().compareTo(currentBlock) < 0) {
+        logger.info(String.format("Transaction %s expired", transaction.getId()));
+        transaction.setPaymentState(PaymentState.EXPIRED);
+        transactionRepository.save(transaction);
       }
     }
   }

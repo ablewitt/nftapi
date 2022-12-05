@@ -2,9 +2,9 @@ package app.nftguy.nftapi;
 
 import app.nftguy.nftapi.cip25.MetaData;
 import app.nftguy.nftapi.helper.*;
-import app.nftguy.nftapi.model.NftTransaction;
-import app.nftguy.nftapi.model.NftTransactionDraft;
 import app.nftguy.nftapi.model.PaymentState;
+import app.nftguy.nftapi.model.Transaction;
+import app.nftguy.nftapi.model.TransactionClientModel;
 import app.nftguy.nftapi.nftstorage.NftStorageService;
 import app.nftguy.nftapi.nftstorage.Responses.UploadResponse;
 import app.nftguy.nftapi.nftstorage.Responses.Value;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-public class NftCreateService {
+public class CreateService {
 
   NftStorageService nftStorageService;
   AccountHelper accountHelper;
@@ -34,9 +34,9 @@ public class NftCreateService {
   TransactionRepository transactionRepository;
   Config config;
 
-  Logger logger = LoggerFactory.getLogger(NftCreateService.class);
+  Logger logger = LoggerFactory.getLogger(CreateService.class);
 
-  NftCreateService(
+  CreateService(
       AccountHelper accountHelper,
       BlockFrostHelper blockFrostHelper,
       NftStorageService nftStorageService,
@@ -52,28 +52,28 @@ public class NftCreateService {
     this.config = config;
   }
 
-  public NftTransactionDraft draftTransaction(MultipartFile file, JSONObject userInput)
+  public TransactionClientModel primeTransaction(MultipartFile file, JSONObject userInput)
       throws Exception {
 
     JSONObject attributes = userInput.getJSONObject("attributes");
-    NftTransaction nftTransaction = emptyTransaction(userInput);
-    if (userInput.has("email") && !userInput.getString("email").isEmpty()){
-      nftTransaction.setEmail(userInput.getString("email"));
+    Transaction transaction = draftTransaction(userInput);
+    if (userInput.has("email") && !userInput.getString("email").isEmpty()) {
+      transaction.setEmail(userInput.getString("email"));
     }
-    transactionRepository.save(nftTransaction);
+    transactionRepository.save(transaction);
     logger.info(
         String.format(
             "New empty transaction. Id: %s, Name: %s, File type: %s, File name: %s",
-            nftTransaction.getId(),
+            transaction.getId(),
             attributes.getString("name"),
             file.getContentType(),
             file.getOriginalFilename()));
-    uploadFile(file, attributes, nftTransaction.getId(), userInput.getString("receive_address"));
-    return transactionRepository.findItemByIdRestricted(nftTransaction.getId());
+    uploadFile(file, attributes, transaction.getId(), userInput.getString("receive_address"));
+    return transactionRepository.createTransactionClientModelById(transaction.getId());
   }
 
-  private NftTransaction emptyTransaction(JSONObject userInput) {
-    return new NftTransaction(
+  private Transaction draftTransaction(JSONObject userInput) {
+    return new Transaction(
         addressHelper.getNextAvailableAddress(),
         null,
         userInput.getString("receive_address"),
@@ -98,7 +98,7 @@ public class NftCreateService {
       MultipartFile file, JSONObject attributes, String nftTransactionId, String receiveAddress)
       throws IOException {
 
-    NftTransaction nftTransaction = transactionRepository.findItemById(nftTransactionId);
+    Transaction transaction = transactionRepository.findTransactionById(nftTransactionId);
     String nftName = attributes.getString("name");
     File tmpFile = File.createTempFile("nftguy", ".tmp");
 
@@ -108,46 +108,38 @@ public class NftCreateService {
         .onErrorReturn(new UploadResponse(false, new Value()))
         .subscribe(
             uploadResponse -> {
-              processResponse(
-                  uploadResponse, attributes, nftName, receiveAddress, nftTransaction, tmpFile);
+              if (uploadResponse.getOk()) {
+                logger.info(
+                    String.format("Image upload cid %s", uploadResponse.getValue().getCid()));
+                try {
+                  initMintingComponents(nftName);
+                  JSONArray ipfsLink = new JSONArray();
+                  ipfsLink.put("ipfs://");
+                  ipfsLink.put(uploadResponse.getValue().getCid());
+                  attributes.put("image", ipfsLink);
+                  NftBuilder nftBuilder =
+                      buildNft(
+                          new MetaData(nftName, attributes, policyHelper.getPolicyId()),
+                          receiveAddress);
+                  transaction.setNetworkFee(nftBuilder.getFee());
+                  transaction.setTransactionCBORBytes(nftBuilder.getTransactionCBORBytes());
+                  transaction.setTtl(nftBuilder.getTtl());
+                  transaction.setPaymentState(PaymentState.PENDING);
+                } catch (CborSerializationException | ApiException | JsonProcessingException e) {
+                  transaction.setPaymentState(PaymentState.FAILED);
+                  logger.warn(String.format("Image upload error %s", e.toString()));
+                  throw new RuntimeException(e);
+                }
+              } else {
+                logger.info(String.format("Image upload failed"));
+                transaction.setPaymentState(PaymentState.FAILED);
+              }
+              transactionRepository.save(transaction);
+              tmpFile.delete();
             });
   }
 
-  private void processResponse(
-      UploadResponse uploadResponse,
-      JSONObject attributes,
-      String nftName,
-      String receiveAddress,
-      NftTransaction nftTransaction,
-      File tmpFile) {
-    if (uploadResponse.getOk()) {
-      logger.info(String.format("Image upload cid %s", uploadResponse.getValue().getCid()));
-      try {
-        initialiseComponents(nftName);
-        JSONArray ipfsLink = new JSONArray();
-        ipfsLink.put("ipfs://");
-        ipfsLink.put(uploadResponse.getValue().getCid());
-        attributes.put("image", ipfsLink);
-        NftBuilder nftBuilder =
-            buildNft(new MetaData(nftName, attributes, policyHelper.getPolicyId()), receiveAddress);
-        nftTransaction.setNetworkFee(nftBuilder.getFee());
-        nftTransaction.setTransactionCBORBytes(nftBuilder.getTransactionCBORBytes());
-        nftTransaction.setTtl(nftBuilder.getTtl());
-        nftTransaction.setPaymentState(PaymentState.PENDING);
-      } catch (CborSerializationException | ApiException | JsonProcessingException e) {
-        nftTransaction.setPaymentState(PaymentState.FAILED);
-        logger.warn(String.format("Image upload error %s", e.toString()));
-        throw new RuntimeException(e);
-      }
-    } else {
-      logger.info(String.format("Image upload failed"));
-      nftTransaction.setPaymentState(PaymentState.FAILED);
-    }
-    transactionRepository.save(nftTransaction);
-    tmpFile.delete();
-  }
-
-  private void initialiseComponents(String assetName) throws CborSerializationException {
+  private void initMintingComponents(String assetName) throws CborSerializationException {
     KeyHelper keyHelper = new KeyHelper();
     policyHelper = new PolicyHelper(keyHelper.getVKey(), keyHelper.getSKey());
     assetHelper = new AssetHelper(assetName, BigInteger.valueOf(1L), policyHelper.getPolicyId());

@@ -1,7 +1,7 @@
 package app.nftguy.nftapi.helper;
 
-import app.nftguy.nftapi.model.NftTransactionAddress;
 import app.nftguy.nftapi.model.PaymentState;
+import app.nftguy.nftapi.model.TransactionAddress;
 import app.nftguy.nftapi.repository.TransactionRepository;
 import com.bloxbean.cardano.client.api.exception.ApiException;
 import com.bloxbean.cardano.client.backend.api.AddressService;
@@ -44,7 +44,7 @@ public class AddressHelper {
   }
 
   public String getNextAvailableAddress() {
-    List<NftTransactionAddress> pendingAddresses = new ArrayList<>();
+    List<TransactionAddress> pendingAddresses = new ArrayList<>();
     pendingAddresses.addAll(transactionRepository.findAddressByPaymentState(PaymentState.PENDING));
     pendingAddresses.addAll(
         transactionRepository.findAddressByPaymentState(PaymentState.UPLOADING));
@@ -55,7 +55,7 @@ public class AddressHelper {
 
     for (String unusedAddress : unusedAddresses) {
       nextAddress = unusedAddress;
-      for (NftTransactionAddress pendingAddress : pendingAddresses) {
+      for (TransactionAddress pendingAddress : pendingAddresses) {
         if (nextAddress.equals(pendingAddress.getNftPayAddress())) {
           nextAddress = "";
           break;

@@ -1,6 +1,6 @@
 package app.nftguy.nftapi.helper;
 
-import app.nftguy.nftapi.model.NftTransaction;
+import app.nftguy.nftapi.model.Transaction;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -29,7 +29,7 @@ public class EmailService {
     this.environment = environment;
   }
 
-  public void sendMimeMessage(NftTransaction nft) {
+  public void sendMimeMessage(Transaction nft) {
     final Document doc;
     try {
       doc =

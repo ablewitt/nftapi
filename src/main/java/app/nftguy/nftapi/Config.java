@@ -1,6 +1,6 @@
 package app.nftguy.nftapi;
 
-import app.nftguy.nftapi.model.NftTransactionConfig;
+import app.nftguy.nftapi.model.TransactionConfiguration;
 import app.nftguy.nftapi.repository.ConfigurationRepository;
 import java.math.BigInteger;
 import org.slf4j.Logger;
@@ -23,18 +23,18 @@ public class Config {
   }
 
   public void setConfig() {
-    NftTransactionConfig config =
-        new NftTransactionConfig(
+    TransactionConfiguration config =
+        new TransactionConfiguration(
             0,
             Long.parseLong(environment.getProperty("create.ttlOffset")),
             new BigInteger(environment.getProperty("create.fee")));
     configurationRepository.save(config);
   }
 
-  public NftTransactionConfig getConfig() {
+  public TransactionConfiguration getConfig() {
 
     if (configurationRepository.findItemById(0) == null) {
-      logger.info(String.format("Config not found in database"));
+      logger.info(String.format("Config not found in database, setting to defaults"));
       setConfig();
     }
 

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document("config")
-public class NftTransactionConfig {
+public class TransactionConfiguration {
 
   @Id Integer id;
 
@@ -15,7 +15,7 @@ public class NftTransactionConfig {
 
   BigInteger createFee;
 
-  public NftTransactionConfig(Integer id, Long ttl, BigInteger createFee) {
+  public TransactionConfiguration(Integer id, Long ttl, BigInteger createFee) {
     this.id = id;
     this.ttl = ttl;
     this.createFee = createFee;
