@@ -1,13 +1,14 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.7'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+    id 'org.springframework.boot' version '3.0.1'
     id 'org.hidetake.swagger.generator' version '2.19.2'
     id "com.diffplug.spotless" version "6.11.0"
 }
 
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
 group = 'app.nftguy'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -34,6 +35,8 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.15.3'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+    implementation 'javax.mail:javax.mail-api:1.6.2'
 
     //test dependencies
     testImplementation 'org.awaitility:awaitility:4.2.0'
@@ -75,5 +78,16 @@ swaggerSources {
         }
     }
 }
+
+tasks.named("bootBuildImage") {
+    docker {
+        publishRegistry {
+            url = "ghcr.io"
+            token = "$System.env.GHCR_TOKEN"
+            imageName = "ghcr.io/ablewitt/nftapi:${version}"
+        }
+    }
+}
+
 
 
