@@ -3,6 +3,9 @@ package app.nftguy.nftapi.helper;
 import app.nftguy.nftapi.model.Transaction;
 import jakarta.mail.Message;
 import jakarta.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -12,11 +15,6 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
 
 @Component
 public class EmailService {
