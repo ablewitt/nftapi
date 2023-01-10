@@ -81,7 +81,7 @@ swaggerSources {
 
 tasks.named("bootBuildImage") {
     docker {
-        isPublish = true
+        publish=true
         publishRegistry {
             url = "ghcr.io"
             token = "$System.env.GHCR_TOKEN"
