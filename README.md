@@ -10,7 +10,7 @@ nftguy api
 ```bash
 ./gradlew -p build/swagger-code-cardanowallet jar
 ```
-
+**If using IntelliJ you may need to *Reload All Gradle Builds* to fix any package errors with cardanowalletclient.** 
 
 ## Endpoint health
 Spring actuator endpoint health is available from ```/actuator/health```.
