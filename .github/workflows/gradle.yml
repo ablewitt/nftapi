@@ -55,4 +55,4 @@ jobs:
           arguments: bootBuildImage
 
       - name: Push Docker
-        run: docker push ghcr.io/${{ GITHUB_REPOSITORY_OWNER }}/nftapi:latest
+        run: docker push ghcr.io/${{ github.actor }}/nftapi:latest
