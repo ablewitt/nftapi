@@ -33,6 +33,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Write value to Properties-file
+        uses: christian-draeger/write-properties@1.1.0
+        with:
+          path: './src/main/resources/prod.properties'
+          property: |
+            'spring.data.mongodb.uri'
+            'account.mnemonic'
+            'blockfrost.project_key'
+            'nft.storage.api_key'
+            'wallet.url'
+            'wallet.walletId'
+            'wallet.passphrase'
+            'email.fromaddress'
+            'spring.mail.host'
+            'spring.mail.username'
+            'spring.mail.password'
+          value: |
+            '$System.env.MONGO_URI'
+            '$System.env.ACC_MNEMONIC'
+            '$System.env.BLOCKFROST_KEY'
+            '$System.env.NFTSTORAGE_KEY'
+            '$System.env.WALLET_URL'
+            '$System.env.WALLET_ID'
+            '$System.env.WALLET_PASSWORD'
+            '$System.env.EMAIL_FROMADDR'
+            '$System.env.MAIL_HOST'
+            '$System.env.MAIL_USERNAME'
+            '$System.env.MAIL_PASSWORD'
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:

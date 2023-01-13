@@ -8,7 +8,7 @@ apply plugin: 'java'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'app.nftguy'
-version = '0.0.2-SNAPSHOT'
+version = '0.1'
 sourceCompatibility = '17'
 
 configurations {
@@ -82,6 +82,7 @@ swaggerSources {
 tasks.named("bootBuildImage") {
     imageName.set("ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:${version}")
     tags = ["ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:latest"]
+    environment = ["spring_profiles_active":"prod"]
     docker {
         publishRegistry {
             username = "$System.env.GITHUB_REPOSITORY_OWNER"
