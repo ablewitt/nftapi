@@ -81,6 +81,7 @@ swaggerSources {
 
 tasks.named("bootBuildImage") {
     imageName.set("ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:${version}")
+    tags = "ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:latest"
     docker {
         publishRegistry {
             username = "$System.env.GITHUB_REPOSITORY_OWNER"
