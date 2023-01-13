@@ -80,12 +80,11 @@ swaggerSources {
 }
 
 tasks.named("bootBuildImage") {
+    imageName.set("ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:${version}")
     docker {
-        publish=true
         publishRegistry {
-            url = "ghcr.io"
+            username = "$System.env.GITHUB_REPOSITORY_OWNER"
             token = "$System.env.GHCR_TOKEN"
-            imageName = "ghcr.io/ablewitt/nftapi:${version}"
         }
     }
 }
