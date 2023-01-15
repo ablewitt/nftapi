@@ -14,7 +14,7 @@ on:
     branches: [ "master" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
       - name: Write value to Properties-file
         uses: christian-draeger/write-properties@1.1.0
         with:
-          path: '${{ github.workspace }}/src/main/resources/prod.properties'
+          path: './src/main/resources/prod.properties'
           property: |
             'spring.data.mongodb.uri'
             'account.mnemonic'
