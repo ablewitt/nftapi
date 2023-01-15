@@ -18,9 +18,8 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    environment: Gradle build
     steps:
 
       - name: Login to GitHub Container Registry
@@ -50,7 +49,7 @@ jobs:
             'spring.mail.username'
             'spring.mail.password'
           value: |
-            '$System.env.MONGO_URI'
+            '.MONGO_URI'
             '$System.env.ACC_MNEMONIC'
             '$System.env.BLOCKFROST_KEY'
             '$System.env.NFTSTORAGE_KEY'
