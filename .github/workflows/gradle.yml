@@ -33,33 +33,33 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Write value to Properties-file
-        uses: christian-draeger/write-properties@1.1.0
+        uses: GuillaumeFalourd/write-java-properties-file@v1
         with:
-          path: './src/main/resources/prod.properties'
+          file_path: './src/main/resources/prod.properties'
           property: |
-            'spring.data.mongodb.uri'
-            'account.mnemonic'
-            'blockfrost.project_key'
-            'nft.storage.api_key'
-            'wallet.url'
-            'wallet.walletId'
-            'wallet.passphrase'
-            'email.fromaddress'
-            'spring.mail.host'
-            'spring.mail.username'
-            'spring.mail.password'
+            spring.data.mongodb.uri
+            account.mnemonic
+            blockfrost.project_key
+            nft.storage.api_key
+            wallet.url
+            wallet.walletId
+            wallet.passphrase
+            email.fromaddress
+            spring.mail.host
+            spring.mail.username
+            spring.mail.password
           value: |
-            '${{ secrets.MONGO_URI }}'
-            ${{ secrets.ACC_MNEMONIC}}
-            '$System.env.BLOCKFROST_KEY'
-            '$System.env.NFTSTORAGE_KEY'
-            '$System.env.WALLET_URL'
-            '$System.env.WALLET_ID'
-            '$System.env.WALLET_PASSWORD'
-            '$System.env.EMAIL_FROMADDR'
-            '$System.env.MAIL_HOST'
-            '$System.env.MAIL_USERNAME'
-            '$System.env.MAIL_PASSWORD'
+            ${{ secrets.MONGO_URI }}
+            ${{ secrets.ACC_MNEMONIC }}
+            ${{ secrets.BLOCKFROST_KEY }}
+            ${{ secrets.NFTSTORAGE_KEY }}
+            ${{ secrets.WALLET_URL }}
+            ${{ secrets.WALLET_ID }}
+            ${{ secrets.WALLET_PASSWORD }}
+            ${{ secrets.EMAIL_FROMADDR }}
+            ${{ secrets.MAIL_HOST }}
+            ${{ secrets.MAIL_USERNAME }}
+            ${{ secrets.MAIL_PASSWORD }}
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
