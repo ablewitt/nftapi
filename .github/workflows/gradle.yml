@@ -49,8 +49,8 @@ jobs:
             'spring.mail.username'
             'spring.mail.password'
           value: |
-            '.MONGO_URI'
             '${{ secrets.MONGO_URI }}'
+            ${{ secrets.ACC_MNEMONIC}}
             '$System.env.BLOCKFROST_KEY'
             '$System.env.NFTSTORAGE_KEY'
             '$System.env.WALLET_URL'
