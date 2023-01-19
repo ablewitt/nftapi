@@ -29,8 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.bloxbean.cardano:cardano-client-lib:0.3.0'
-    implementation 'com.bloxbean.cardano:cardano-client-backend-blockfrost:0.3.0'
+    implementation 'com.bloxbean.cardano:cardano-client-lib:0.4.2'
+    implementation 'com.bloxbean.cardano:cardano-client-backend-blockfrost:0.4.2'
     implementation 'org.json:json:20220320'
     implementation 'org.jsoup:jsoup:1.15.3'
     compileOnly 'org.projectlombok:lombok'
@@ -81,7 +81,7 @@ swaggerSources {
 
 tasks.named("bootBuildImage") {
     imageName.set("ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:${version}")
-    tags = ["ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:latest"]
+    tags = ["ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:latest", "ghcr.io/" + "$System.env.GITHUB_REPOSITORY_OWNER" + "/nftapi:${version}"]
     docker {
         publishRegistry {
             username = "$System.env.GITHUB_REPOSITORY_OWNER"
